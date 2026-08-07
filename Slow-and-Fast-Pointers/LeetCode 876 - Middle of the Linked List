@@ -1,0 +1,573 @@
+# LeetCode 876 - Middle of the Linked List
+
+## 📌 Problem
+
+Ek singly linked list di gayi hai.
+
+Hume uska **middle node** return karna hai.
+
+Agar linked list me **2 middle nodes** ho (even length), to **second middle node** return karna hai.
+
+---
+
+# 🔹 Example 1
+
+```text
+Input:
+
+1 → 2 → 3 → 4 → 5
+```
+
+Output:
+
+```text
+3
+```
+
+Reason:
+
+```text
+3 middle node hai.
+```
+
+---
+
+# 🔹 Example 2
+
+```text
+Input:
+
+1 → 2 → 3 → 4 → 5 → 6
+```
+
+Output:
+
+```text
+4
+```
+
+Reason:
+
+```text
+Even nodes hain.
+
+Middle:
+
+3
+4
+
+LeetCode second middle return karne ko bolta hai.
+
+Answer = 4
+```
+
+---
+
+# 🧠 Brute Force Approach
+
+### Step 1
+
+Linked List ke total nodes count karo.
+
+Example:
+
+```text
+1 → 2 → 3 → 4 → 5
+```
+
+Count:
+
+```text
+5
+```
+
+---
+
+### Step 2
+
+Middle index:
+
+```text
+count/2
+```
+
+Example
+
+```text
+5/2 = 2
+```
+
+Head se 2 steps move karo.
+
+Answer:
+
+```text
+3
+```
+
+---
+
+## Complexity
+
+```text
+Time = O(n)
+
+Space = O(1)
+```
+
+---
+
+# 🚀 Optimal Approach (Slow & Fast Pointer)
+
+Hum do pointers use karenge.
+
+```cpp
+ListNode* slow = head;
+ListNode* fast = head;
+```
+
+Rule:
+
+```text
+Slow → 1 step
+
+Fast → 2 steps
+```
+
+Jab:
+
+```text
+Fast list ke end tak pahunch jayega
+```
+
+Tab:
+
+```text
+Slow middle node par hoga.
+```
+
+---
+
+# 🔥 Standard Template
+
+```cpp
+ListNode* slow = head;
+ListNode* fast = head;
+
+while(fast != NULL && fast->next != NULL){
+
+    slow = slow->next;
+
+    fast = fast->next->next;
+}
+```
+
+Loop ke baad:
+
+```text
+Slow middle node par hoga.
+```
+
+---
+
+# 🔥 Why While Condition?
+
+Hum Fast ko:
+
+```cpp
+fast = fast->next->next;
+```
+
+move kara rahe hain.
+
+Agar:
+
+```cpp
+fast == NULL
+```
+
+ya
+
+```cpp
+fast->next == NULL
+```
+
+hua,
+
+to:
+
+```cpp
+fast->next->next;
+```
+
+Runtime Error dega.
+
+Isliye:
+
+```cpp
+while(fast != NULL && fast->next != NULL)
+```
+
+likhte hain.
+
+---
+
+# 🔥 Dry Run (Odd Nodes)
+
+Linked List
+
+```text
+1 → 2 → 3 → 4 → 5
+```
+
+Initially
+
+```text
+Slow = 1
+
+Fast = 1
+```
+
+---
+
+### Iteration 1
+
+```text
+Slow = 2
+
+Fast = 3
+```
+
+Diagram
+
+```text
+1 → 2 → 3 → 4 → 5
+
+    S   F
+```
+
+---
+
+### Iteration 2
+
+```text
+Slow = 3
+
+Fast = 5
+```
+
+Diagram
+
+```text
+1 → 2 → 3 → 4 → 5
+
+        S       F
+```
+
+---
+
+Next:
+
+```text
+Fast->next = NULL
+```
+
+Loop stop.
+
+Answer:
+
+```text
+Slow = 3
+```
+
+---
+
+# 🔥 Dry Run (Even Nodes)
+
+```text
+1 → 2 → 3 → 4 → 5 → 6
+```
+
+Initially
+
+```text
+S = 1
+
+F = 1
+```
+
+↓
+
+```text
+S = 2
+
+F = 3
+```
+
+↓
+
+```text
+S = 3
+
+F = 5
+```
+
+↓
+
+```text
+S = 4
+
+F = NULL
+```
+
+Loop stop.
+
+Return:
+
+```text
+4
+```
+
+Second middle automatically mil jata hai.
+
+---
+
+# 🔥 First Middle vs Second Middle
+
+## Second Middle (LeetCode 876)
+
+```cpp
+slow = head;
+fast = head;
+```
+
+Example:
+
+```text
+1 → 2 → 3 → 4 → 5 → 6
+```
+
+Answer:
+
+```text
+4
+```
+
+---
+
+## First Middle
+
+Agar first middle return karna ho:
+
+```cpp
+slow = head;
+fast = head->next;
+```
+
+Same example:
+
+```text
+1 → 2 → 3 → 4 → 5 → 6
+```
+
+Answer:
+
+```text
+3
+```
+
+---
+
+## Memory Trick
+
+```text
+fast = head
+        ↓
+Second Middle
+```
+
+```text
+fast = head->next
+        ↓
+First Middle
+```
+
+---
+
+# 💻 C++ Code
+
+```cpp
+class Solution {
+public:
+
+    ListNode* middleNode(ListNode* head) {
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while(fast != NULL && fast->next != NULL){
+
+            slow = slow->next;
+
+            fast = fast->next->next;
+        }
+
+        return slow;
+    }
+};
+```
+
+---
+
+# 🔥 Code Flow
+
+```text
+head
+ ↓
+slow = head
+fast = head
+ ↓
+while(fast != NULL && fast->next != NULL)
+ ↓
+slow = slow->next
+ ↓
+fast = fast->next->next
+ ↓
+Loop End
+ ↓
+return slow
+```
+
+---
+
+# ⏱️ Time Complexity
+
+Slow aur Fast dono milkar list ko ek hi traversal me process karte hain.
+
+```text
+Time Complexity = O(n)
+```
+
+---
+
+# 💾 Space Complexity
+
+Extra memory use nahi hoti.
+
+```text
+Space Complexity = O(1)
+```
+
+---
+
+# ⚠️ Common Mistakes
+
+## 1. Wrong While Condition
+
+Wrong:
+
+```cpp
+while(fast != NULL)
+```
+
+Correct:
+
+```cpp
+while(fast != NULL && fast->next != NULL)
+```
+
+---
+
+## 2. Fast ko 1 step move karna
+
+Wrong:
+
+```cpp
+fast = fast->next;
+```
+
+Correct:
+
+```cpp
+fast = fast->next->next;
+```
+
+---
+
+## 3. Slow ko 2 steps move karna
+
+Wrong:
+
+```cpp
+slow = slow->next->next;
+```
+
+Correct:
+
+```cpp
+slow = slow->next;
+```
+
+---
+
+## 4. First aur Second Middle confuse karna
+
+Second Middle:
+
+```cpp
+fast = head;
+```
+
+First Middle:
+
+```cpp
+fast = head->next;
+```
+
+---
+
+# ⭐ Quick Revision
+
+```text
+Slow = 1 step
+
+↓
+
+Fast = 2 steps
+
+↓
+
+Fast reaches end
+
+↓
+
+Slow reaches middle
+
+↓
+
+Return slow
+```
+
+---
+
+# 🎯 One-Line Revision
+
+> Slow pointer har iteration me 1 step aur Fast pointer 2 steps move karta hai. Jab Fast list ke end tak pahunchta hai, Slow middle node par hota hai.
+
+## Pattern
+
+```text
+Slow & Fast Pointer
+
+↓
+
+1 Step + 2 Steps
+
+↓
+
+Fast Ends
+
+↓
+
+Slow Middle
+```
