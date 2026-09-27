@@ -23,4 +23,4 @@ This repository contains my DSA notes and LeetCode solutions in C++.
 
 ## 💻 Language
 
-C++
+C++,c
