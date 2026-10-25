@@ -35,7 +35,7 @@ Output:
 
 Explanation:
 
-Ek minimum-sum path:
+Minimum-sum path:
 
 ```text
 1 → 3 → 1 → 1 → 1
@@ -47,7 +47,7 @@ Total sum:
 1 + 3 + 1 + 1 + 1 = 7
 ```
 
-Isliye answer `7` hai.
+Isliye final answer `7` hai.
 
 ---
 
@@ -55,7 +55,7 @@ Isliye answer `7` hai.
 
 ### Main Idea
 
-Har cell `(r,c)` tak pahunchne ka minimum sum calculate karenge.
+Har cell `(r,c)` tak pahunchne ka minimum path sum calculate karenge.
 
 Kisi cell par hum sirf do directions se aa sakte hain:
 
@@ -88,20 +88,22 @@ if (r < 0 || c < 0) {
 
 Agar row ya column negative ho gaya, toh hum grid ke bahar hain.
 
-`INT_MAX` C++ mein ek integer ki maximum representable value hai. Yahan ise infinity jaisi badi value ke roop mein use karte hain, taaki invalid direction minimum select na ho.
+`INT_MAX` C++ mein maximum representable integer value hai. Is problem mein ise infinity jaisi badi value maante hain, taaki invalid direction minimum select na ho.
 
 Example:
 
 ```text
 up   = INT_MAX
-left = 1
+left = 4
 
-min(INT_MAX, 1) = 1
+min(INT_MAX, 4) = 4
 ```
 
 Isliye valid direction select hogi.
 
-**Important:** Is problem mein `INT_MAX` use karte hain, `0` nahi, kyunki minimum calculate kar rahe hain. Agar invalid direction ke liye `0` return karenge, toh woh galat minimum ban sakta hai.
+**Important:** Minimum path sum mein invalid direction ke liye `0` return nahi kar sakte, kyunki `min(0, 4) = 0` galat result dega.
+
+`INT_MAX` ko current cell ki value ke saath tabhi add karne ka risk hota hai jab dono directions invalid hon. Valid rectangular grid mein har cell ke liye starting cell se ek valid path hota hai, isliye normal problem constraints mein minimum valid direction se aata hai.
 
 #### Case 2: Starting Cell
 
@@ -123,9 +125,9 @@ if (dp[r][c] != -1) {
 }
 ```
 
-Agar cell ka answer pehle se calculate ho chuka hai, toh saved answer return karenge.
+Agar cell ka answer pehle se calculate ho chuka hai, toh saved answer return kar denge.
 
-Isse same calculation dobara nahi hoti.
+Isse same calculation dobara nahi karni padegi.
 
 ### Recursion Flow
 
@@ -207,7 +209,7 @@ int minPathSum(vector<vector<int>>& grid) {
 - `n` = total columns.
 - `dp` = answers save karne ke liye 2D array.
 - Initially sab values `-1` hain.
-- `solve(m-1,n-1,...)` destination se calculation start karta hai.
+- `solve(m-1, n-1, ...)` destination cell se calculation start karta hai.
 
 ### Function 2: solve()
 
@@ -285,9 +287,9 @@ dp = [
 solve(2, 2, grid, dp);
 ```
 
-Current cell ki value `1` hai.
+Is cell ki value `1` hai.
 
-Iske liye do calls hongi:
+Do calls hongi:
 
 ```cpp
 up = solve(1, 2, grid, dp);
@@ -299,8 +301,6 @@ Code mein `up` pehle likha hai, isliye pehle `solve(1,2)` complete hoga.
 ### Step 2: solve(1,2)
 
 Current cell ki value `1` hai.
-
-Iske up aur left:
 
 ```cpp
 up = solve(0, 2, grid, dp);
@@ -338,7 +338,7 @@ solve(0, 0, grid, dp);
 Return:
 
 ```cpp
-grid[0][0] = 1
+grid[0][0] = 1;
 ```
 
 Ab `solve(0,1)` ke liye:
@@ -396,9 +396,7 @@ up = solve(0, 1, grid, dp);
 left = solve(1, 0, grid, dp);
 ```
 
-`solve(0,1)` ka answer pehle se `dp[0][1] = 4` mein saved hai.
-
-Isliye dobara calculation nahi hogi; `4` return hoga.
+`solve(0,1)` ka answer pehle se `dp[0][1] = 4` mein saved hai. Isliye saved answer `4` return hoga.
 
 Ab `solve(1,0)` calculate karenge.
 
@@ -527,7 +525,7 @@ dp[2][2] = 1 + min(6, 8);
           = 7;
 ```
 
-**Final Answer = 7**
+Final Answer = **7**
 
 ### Final DP Matrix
 
@@ -572,14 +570,12 @@ Agar invalid direction ke liye `0` return karte, toh:
 min(0, 4) = 0
 ```
 
-Ye galat hota, kyunki valid path ka sum kam se kam `4` hai.
+Ye galat hota, kyunki valid path ka sum `4` hai.
 
-**Difference yaad rakho:**
+### Difference Yaad Rakho
 
 - LC 62 — Unique Paths: invalid direction ke `0` paths hote hain, toh `0` return karo.
 - LC 64 — Minimum Path Sum: invalid direction ko minimum banne se rokna hai, toh `INT_MAX` return karo.
-
-Note: Valid path present hone ke kaaran is grid problem mein `INT_MAX` sirf invalid direction ko reject karne ke liye use hota hai. Normal constraints ke andar selected minimum valid hota hai.
 
 ---
 
@@ -591,7 +587,7 @@ if (dp[r][c] != -1) {
 }
 ```
 
-Agar kisi cell ka answer already calculate ho gaya hai, toh recursion use dobara calculate nahi karta.
+Agar kisi cell ka answer already calculate ho gaya hai, toh recursion usse dobara calculate nahi karta.
 
 Answer yahan save hota hai:
 
